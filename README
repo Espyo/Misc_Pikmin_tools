@@ -1,0 +1,8 @@
+﻿Espyo's miscellaneous Pikmin tools.
+
+Each tool should have its own documentation, so this file will just serve as a general README.
+
+To run Python scripts that involve images, you'll want to install Pillow. Use pip for this. Also, chances are my scripts are Python 2.7 scripts, so try 2.7 first.
+
+List of tools:
+    Pikmin 2 title tool: Helps you create title screen Pikmin formations.
