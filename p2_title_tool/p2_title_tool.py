@@ -9,7 +9,13 @@ def do_png_to_txt(input_fn, output_fn) :
     try :
         input = Image.open(input_fn)
     except e :
-        print "Invalid image file \"" + input_fn + "\"."
+        print("Invalid image file \"" + input_fn + "\".")
+        sys.exit(-1)
+    
+    # Quickly test the return type of the pixel.
+    # If it's an int, this PNG is 8-bit, which is not supported.
+    if isinstance(input.getpixel((0, 0)), int) :
+        print("This PNG file is 8-bit, which is not supported. Please use a 32-bit PNG.")
         sys.exit(-1)
     
     # Image size.
@@ -61,7 +67,8 @@ def do_png_to_txt(input_fn, output_fn) :
             print(
                 "WARNING: There are more than 100 " +
                 ("Blue" if t == 0 else "Red" if t == 1 else "Yellow" if t == 2 else "Purple" if t == 3 else "White") +
-                " Pikmin. Chances are the title screen will be corrupted."
+                " Pikmin. They have all been mapped successfully, but the game is not ready to handle more than 100" +
+                " of each type on the title screen. Chances are the title screen will show up corrupted in-game."
             )
     
     print(
