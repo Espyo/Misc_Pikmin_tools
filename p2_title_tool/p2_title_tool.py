@@ -22,11 +22,11 @@ def do_png_to_txt(input_fn, output_fn) :
     size = input.size
     # List of Pikmin, for each of the five types.
     pikmin = []
-    for t in xrange(5) :
+    for t in range(5) :
         pikmin.append([])
     
-    for y in xrange(size[1]) :
-        for x in xrange(size[0]) :
+    for y in range(size[1]) :
+        for x in range(size[0]) :
             p = input.getpixel((x, y))
             t = -1
             if p[0] == 0 and p[1] == 0 and p[2] == 255 :
@@ -52,23 +52,25 @@ def do_png_to_txt(input_fn, output_fn) :
     output = open(output_fn, "wb")
     result_str = ""
     
-    for t in xrange(5) :
+    for t in range(5) :
         # Start by typing how many Pikmin of this type there are.
         result_str += str(len(pikmin[t])) + " "
-        for p in xrange(len(pikmin[t])) :
+        for p in range(len(pikmin[t])) :
             # Coordinates of the Pikmin. Note that in P2, less Y means down, so we have to invert.
             result_str += str(pikmin[t][p][0]) + " " + str(-pikmin[t][p][1]) + " "
     
-    output.write(result_str)
+    output.write(bytes(result_str, encoding="utf-8"))
     output.close()
     
-    for t in xrange(5) :
+    for t in range(5) :
         if len(pikmin[t]) > 100 :
             print(
                 "WARNING: There are more than 100 " +
                 ("Blue" if t == 0 else "Red" if t == 1 else "Yellow" if t == 2 else "Purple" if t == 3 else "White") +
-                " Pikmin. They have all been mapped successfully, but the game is not ready to handle more than 100" +
-                " of each type on the title screen. Chances are the title screen will show up corrupted in-game."
+                " Pikmin.\n" +
+                "They have all been mapped successfully, but the game is not ready to handle\n" +
+                "more than 100 of each type on the title screen. Chances are the title screen\n" +
+                "will show up corrupted in-game."
             )
     
     print(
@@ -91,7 +93,7 @@ def do_txt_to_png(input_fn, output_fn) :
     
     # List of Pikmin, for each of the five types.
     pikmin = []
-    for t in xrange(5) :
+    for t in range(5) :
         pikmin.append([])
     # Minimum and maximum found coordinates. Used for determining image size.
     min_coords = (99999, 99999)
@@ -100,14 +102,14 @@ def do_txt_to_png(input_fn, output_fn) :
     words = input.read().split()
     cur_word = 0
     
-    for t in xrange(5) :
+    for t in range(5) :
         # Start with the word that defines how many Pikmin of this type there are.
         word = words[cur_word]
         cur_word += 1
         type_total = int(word)
         cur_point = (0, 0)
         
-        for p in xrange(type_total) :
+        for p in range(type_total) :
             word = words[cur_word]
             cur_word += 1
             cur_point = (float(word), cur_point[1])
@@ -130,13 +132,13 @@ def do_txt_to_png(input_fn, output_fn) :
     size = (half_width * 2 + 2, half_height * 2 + 2)
     
     # Adjust all Pikmin coordinates so they are drawn in the right pixel in the image.
-    for t in xrange(5) :
-        for p in xrange(len(pikmin[t])) :
+    for t in range(5) :
+        for p in range(len(pikmin[t])) :
             pikmin[t][p] = (pikmin[t][p][0] + size[0] / 2, pikmin[t][p][1] + size[1] / 2)
     
     output = Image.new("RGBA", size, (0, 0, 0, 255))
-    for t in xrange(5) :
-        for p in xrange(len(pikmin[t])) :
+    for t in range(5) :
+        for p in range(len(pikmin[t])) :
             output.putpixel(
                 (int(pikmin[t][p][0]), int(pikmin[t][p][1])),
                 ((0, 0, 255, 255) if t == 0 else (255, 0, 0, 255) if t == 1 else (255, 255, 0, 255) if t == 2 else
