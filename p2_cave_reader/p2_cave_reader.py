@@ -5,10 +5,6 @@ about the cave. This information is very raw, using internal names, and not sepa
 the objects by categories.
 '''
 
-#TODO Objects in the "decorative" category have the number after the class serve as just the minimum amount
-#TODO What is the difference between two Dwarf Red Bulborb entries with min amount 1, and one entry with min amount 2? Surely there must be some
-
-
 # Data about a cave.
 class Cave :
     def __init__(self) :
@@ -197,6 +193,7 @@ def read_tekiinfo(infile, cave_data, sublevel_nr) :
     next_is_weight = True
     entry_count = 0
     entry_nr = 0
+    weight_str = ""
     
     for line in infile :
         line = clean_line(line)
@@ -233,16 +230,21 @@ def read_tekiinfo(infile, cave_data, sublevel_nr) :
                 else :
                     obj.obj_class = words[0]
                 
-                obj.weight = int(words[1][-1])
-                s = words[1][:-1]
-                if len(s) == 0 :
-                    s = "0"
-                obj.min_amount = int(s)
+                weight_str = words[1]
                 
                 next_is_weight = False
                 
             else :
                 obj.spawn_type = int(line)
+                
+                if obj.spawn_type == 6 :
+                    obj.min_amount = int(weight_str)
+                else :
+                    obj.weight = int(weight_str[-1])
+                    weight_str = weight_str[:-1]
+                    if len(weight_str) == 0 :
+                        weight_str = "0"
+                    obj.min_amount = int(weight_str)
                 
                 next_is_weight = True
                 entry_nr += 1
@@ -341,6 +343,7 @@ def read_capinfo(infile, cave_data, sublevel_nr) :
     next_is_weight = False
     entry_count = 0
     entry_nr = 0
+    weight_str = ""
     
     for line in infile :
         line = clean_line(line)
@@ -377,17 +380,23 @@ def read_capinfo(infile, cave_data, sublevel_nr) :
                     obj.carrying = words[0][underscore_pos + 1:]
                 else :
                     obj.obj_class = words[0]
-                obj.weight = int(words[1][-1])
-                s = words[1][:-1]
-                if len(s) == 0 :
-                    s = "0"
-                obj.min_amount = int(s)
+                
+                weight_str = words[1]
                 
                 next_is_cap_type = False
                 next_is_weight = False
                 
             else :
                 obj.spawn_type = int(line)
+                
+                if obj.spawn_type == 6 :
+                    obj.min_amount = int(weight_str)
+                else :
+                    obj.weight = int(weight_str[-1])
+                    weight_str = weight_str[:-1]
+                    if len(weight_str) == 0 :
+                        weight_str = "0"
+                    obj.min_amount = int(weight_str)
                 
                 next_is_cap_type = True
                 next_is_weight = False
