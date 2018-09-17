@@ -5,6 +5,8 @@ about the cave. This information is very raw, using internal names, and not sepa
 the objects by categories.
 '''
 
+from . import constants
+
 # Data about a cave.
 class Cave :
     def __init__(self) :
@@ -224,11 +226,25 @@ def read_tekiinfo(infile, cave_data, sublevel_nr) :
                         words[0] = words[0][1:]
                 
                 underscore_pos = words[0].find("_")
-                if(underscore_pos != -1) :
-                    obj.obj_class = words[0][:underscore_pos]
-                    obj.carrying = words[0][underscore_pos + 1:]
-                else :
+                if underscore_pos == -1 :
                     obj.obj_class = words[0]
+                else :
+                    internal_name_found = False
+                    tentative_internal_name = words[0][:underscore_pos]
+                    while underscore_pos != -1:
+                        try:
+                            data = constants.OBJECT_LIST.index(tentative_internal_name.lower())
+                            internal_name_found = True
+                            break
+                        except ValueError:
+                            underscore_pos = words[0].find("_", underscore_pos + 1)
+                            tentative_internal_name = words[0][:underscore_pos]
+                
+                    if internal_name_found and underscore_pos != -1:
+                        obj.obj_class = words[0][:underscore_pos]
+                        obj.carrying = words[0][underscore_pos + 1:]
+                    else :
+                        obj.obj_class = words[0]
                 
                 weight_str = words[1]
                 
@@ -374,12 +390,27 @@ def read_capinfo(infile, cave_data, sublevel_nr) :
                 if words[0][0] == '$' :
                     obj.spawn_method = int(words[0][1])
                     words[0] = words[0][2:]
+                
                 underscore_pos = words[0].find("_")
-                if(underscore_pos != -1) :
-                    obj.obj_class = words[0][:underscore_pos]
-                    obj.carrying = words[0][underscore_pos + 1:]
-                else :
+                if underscore_pos == -1 :
                     obj.obj_class = words[0]
+                else :
+                    internal_name_found = False
+                    tentative_internal_name = words[0][:underscore_pos]
+                    while underscore_pos != -1:
+                        try:
+                            data = constants.OBJECT_LIST.index(tentative_internal_name.lower())
+                            internal_name_found = True
+                            break
+                        except ValueError:
+                            underscore_pos = words[0].find("_", underscore_pos + 1)
+                            tentative_internal_name = words[0][:underscore_pos]
+                
+                    if internal_name_found and underscore_pos != -1:
+                        obj.obj_class = words[0][:underscore_pos]
+                        obj.carrying = words[0][underscore_pos + 1:]
+                    else :
+                        obj.obj_class = words[0]
                 
                 weight_str = words[1]
                 
