@@ -1,3 +1,45 @@
+'''
+Misc. notes:
+- 0xCDC went from 0x01 to 0x02 when I opened the logs for the first time (but not read the Red Pikmin entry)
+- 0x05A went from 0x00 to 0x40 when I read the Red Pikmin entry on the logs
+- 0xAF3 went from 0x00 to 0x04 when the ship warned about the Breadbug in First Expedition
+- 0xAF1 went from 0x00 to 0x40 when the ship warned me to grab the first treasure
+- 0xAF0 went from 0x00 to 0x80 when the ship warned me that "woah, that thing is worth 100? try to find more"
+- 0xA14 went from 0x00 to 0x08 when I saw the trowel cutscene in First Expedition
+- 0xAF0 went from 0x80 to 0x81 when the ship warned me about the jetpack
+- 0xAF2 went from 0x00 to 0x01 when the ship warned me about there being no more Pikmin alive
+- 0x038 went from 0x00 to 0x08 when I beat 1-A (with no Pikmin, treasures, or new log entries)
+- 0x039 went from 0x00 to 0x11 when I beat 1-A (with no Pikmin, treasures, or new log entries)
+- 0x0E8 went from 0x00 to 0x06 when I beat 1-A (with no Pikmin, treasures, or new log entries)
+- 0x114 went from 0x00 to 0x06 when I beat 1-A (with no Pikmin, treasures, or new log entries)
+- 0x13C went from 0x00 to 0x06 when I beat 1-A (with no Pikmin, treasures, or new log entries)
+- 0x194 went from 0x00 to 0x06 when I beat 1-A (with no Pikmin, treasures, or new log entries)
+- 0x1E8 went from 0x00 to 0x06 when I beat 1-A (with no Pikmin, treasures, or new log entries)
+- 0x25C went from 0x00 to 0x06 when I beat 1-A (with no Pikmin, treasures, or new log entries)
+- 0x278 went from 0x00 to 0x06 when I beat 1-A (with no Pikmin, treasures, or new log entries)
+- 0x294 went from 0x00 to 0x06 when I beat 1-A (with no Pikmin, treasures, or new log entries)
+- 0x2B0 went from 0x00 to 0x06 when I beat 1-A (with no Pikmin, treasures, or new log entries)
+- 0x2CC went from 0x00 to 0x06 when I beat 1-A (with no Pikmin, treasures, or new log entries)
+- 0x324 went from 0x00 to 0x06 when I beat 1-A (with no Pikmin, treasures, or new log entries)
+- 0x394 went from 0x00 to 0x06 when I beat 1-A (with no Pikmin, treasures, or new log entries)
+- 0x591 went from 0x00 to 0x01 when I beat 1-A (with no Pikmin, treasures, or new log entries) - seems to control what connection paths exist between areas in the area select
+- 0x592 went from 0x00 to 0x01 when I beat 1-A (with no Pikmin, treasures, or new log entries) - seems to control what connection paths exist between areas in the area select
+- 0x59A went from 0x01 to 0x03 when I beat 1-A (with no Pikmin, treasures, or new log entries) - seems to control what connection paths exist between areas in the area select
+- 0x5A4 went from 0x00 to 0x01 when I beat 1-A (with no Pikmin, treasures, or new log entries) - seems to control what connection paths exist between areas in the area select
+- 0x7A8 went from 0x00 to 0xEC when I beat 1-A (with no Pikmin, treasures, or new log entries)
+- 0x7A9 went from 0x00 to 0x57 when I beat 1-A (with no Pikmin, treasures, or new log entries)
+- 0x7AA went from 0x00 to 0x41 when I beat 1-A (with no Pikmin, treasures, or new log entries)
+- 0x7AB went from 0x00 to 0x85 when I beat 1-A (with no Pikmin, treasures, or new log entries)
+- 0x7AC went from 0x00 to 0x15 when I beat 1-A (with no Pikmin, treasures, or new log entries)
+- 0x9B0 went from 0x04 to 0x05 when I beat 1-A (with no Pikmin, treasures, or new log entries)
+- 0xBFC went from 0x00 to 0x08 when I beat 1-A (with no Pikmin, treasures, or new log entries)
+- 0xBFD went from 0x00 to 0x11 when I beat 1-A (with no Pikmin, treasures, or new log entries)
+- 0xC98 went from 0x00 to 0x01 when I beat 1-A (with no Pikmin, treasures, or new log entries)
+- 0xD88 went from 0x00 to 0x04 when I beat 1-A (with no Pikmin, treasures, or new log entries) - setting to 0 again made the first Secret Spot disappear
+'''
+
+
+
 DATA_UINT8 = 0
 DATA_UINT16 = 1
 DATA_UINT32 = 2
@@ -5,42 +47,42 @@ CHECKSUM_LOCATION = 0xC
 
 def init_file_map(file_map) :
     file_map.new_block("metadata", "SAVE")
-    file_map.register("unk001", DATA_UINT32)
-    file_map.register("unk002", DATA_UINT32)
+    file_map.register("unk001",   DATA_UINT32)
+    file_map.register("unk002",   DATA_UINT32)
     file_map.register("checksum", DATA_UINT32)
     
     file_map.new_block("news", "NEWS")
-    file_map.register("unk001", DATA_UINT32)
-    file_map.register("unk002", DATA_UINT32)
-    file_map.register("unk003", DATA_UINT32)
+    file_map.register("unk001",            DATA_UINT32)
+    file_map.register("pending_news_unk1", DATA_UINT32)
+    file_map.register("pending_news_unk2", DATA_UINT32)
     
     file_map.new_block("options", "OPTI")
-    file_map.register("unk001", DATA_UINT32)
+    file_map.register("unk001",       DATA_UINT32)
     file_map.register("music_volume", DATA_UINT8)
-    file_map.register("sfx_volume", DATA_UINT8)
-    file_map.register("unk002", DATA_UINT16)
+    file_map.register("sfx_volume",   DATA_UINT8)
+    file_map.register("unk002",       DATA_UINT16)
     
-    file_map.new_block("pbuf", "PBUF")
-    file_map.register("unk001", DATA_UINT32)
-    file_map.register("unk002", DATA_UINT32)
-    file_map.register("unk003", DATA_UINT32)
-    file_map.register("unk004", DATA_UINT32)
-    file_map.register("unk005", DATA_UINT32)
-    file_map.register("unk006", DATA_UINT32)
-    file_map.register("unk007", DATA_UINT32)
-    file_map.register("unk008", DATA_UINT32)
-    file_map.register("unk009", DATA_UINT32)
-    file_map.register("unk010", DATA_UINT32)
-    file_map.register("unk011", DATA_UINT32)
-    file_map.register("unk012", DATA_UINT32)
-    file_map.register("unk013", DATA_UINT32)
-    file_map.register("unk014", DATA_UINT32)
-    file_map.register("unk015", DATA_UINT32)
-    file_map.register("unk016", DATA_UINT32)
-    file_map.register("unk017", DATA_UINT32)
-    file_map.register("unk018", DATA_UINT32)
-    file_map.register("unk019", DATA_UINT32)
-    file_map.register("unk020", DATA_UINT32)
+    file_map.new_block("log_entries", "PBUF")
+    file_map.register("unk001",                  DATA_UINT32)
+    file_map.register("unlocked_bitfield_01",    DATA_UINT32)
+    file_map.register("unlocked_bitfield_02",    DATA_UINT32)
+    file_map.register("unlocked_bitfield_03",    DATA_UINT32)
+    file_map.register("unlocked_bitfield_04",    DATA_UINT32)
+    file_map.register("unlocked_bitfield_05",    DATA_UINT32)
+    file_map.register("unlocked_bitfield_06",    DATA_UINT32)
+    file_map.register("unlocked_bitfield_07",    DATA_UINT32)
+    file_map.register("unlocked_bitfield_08",    DATA_UINT32)
+    file_map.register("unlocked_bitfield_09",    DATA_UINT32)
+    file_map.register("read_pikmin_bitfield",    DATA_UINT32)
+    file_map.register("read_others_bitfield_01", DATA_UINT32)
+    file_map.register("read_others_bitfield_02", DATA_UINT32)
+    file_map.register("read_others_bitfield_03", DATA_UINT32)
+    file_map.register("read_others_bitfield_04", DATA_UINT32)
+    file_map.register("read_others_bitfield_05", DATA_UINT32)
+    file_map.register("read_others_bitfield_06", DATA_UINT32)
+    file_map.register("read_others_bitfield_07", DATA_UINT32)
+    file_map.register("read_others_bitfield_08", DATA_UINT32)
+    file_map.register("read_others_bitfield_09", DATA_UINT32)
     
     file_map.new_block("pikmin_park", "PARK")
     file_map.register("unk001", DATA_UINT32)
@@ -632,19 +674,19 @@ def init_file_map(file_map) :
     file_map.register("unk263", DATA_UINT32)
     
     file_map.new_block("game", "GAME")
-    file_map.register("unk001", DATA_UINT32)
+    file_map.register("unk001",          DATA_UINT32)
     file_map.register("total_sparklium", DATA_UINT32)
-    file_map.register("unk002", DATA_UINT32)
-    file_map.register("unk003", DATA_UINT32)
-    file_map.register("unk004", DATA_UINT32)
-    file_map.register("unk005", DATA_UINT32)
-    file_map.register("unk006", DATA_UINT32)
-    file_map.register("unk007", DATA_UINT32)
-    file_map.register("unk008", DATA_UINT32)
-    file_map.register("unk009", DATA_UINT32)
-    file_map.register("unk010", DATA_UINT32)
-    file_map.register("unk011", DATA_UINT32)
-    file_map.register("unk012", DATA_UINT32)
+    file_map.register("unk002",          DATA_UINT32)
+    file_map.register("unk003",          DATA_UINT32)
+    file_map.register("unk004",          DATA_UINT32)
+    file_map.register("unk005",          DATA_UINT32)
+    file_map.register("unk006",          DATA_UINT32)
+    file_map.register("unk007",          DATA_UINT32)
+    file_map.register("unk008",          DATA_UINT32)
+    file_map.register("unk009",          DATA_UINT32)
+    file_map.register("unk010",          DATA_UINT32)
+    file_map.register("unk011",          DATA_UINT32)
+    file_map.register("unk012",          DATA_UINT32)
     
     file_map.new_block("evnt", "EVNT")
     file_map.register("unk001", DATA_UINT32)
@@ -846,17 +888,17 @@ def init_file_map(file_map) :
     file_map.register("unk019", DATA_UINT32)
     
     file_map.new_block("date", "DATE")
-    file_map.register("unk001", DATA_UINT32)
-    file_map.register("unk002", DATA_UINT32)
-    file_map.register("month", DATA_UINT8)
-    file_map.register("day", DATA_UINT8)
-    file_map.register("hours", DATA_UINT8)
+    file_map.register("unk001",  DATA_UINT32)
+    file_map.register("year",    DATA_UINT32)
+    file_map.register("month",   DATA_UINT8)
+    file_map.register("day",     DATA_UINT8)
+    file_map.register("hours",   DATA_UINT8)
     file_map.register("minutes", DATA_UINT8)
     file_map.register("seconds", DATA_UINT8)
-    file_map.register("unk003", DATA_UINT32)
-    file_map.register("unk004", DATA_UINT32)
-    file_map.register("unk005", DATA_UINT16)
-    file_map.register("unk006", DATA_UINT8)
+    file_map.register("unk003",  DATA_UINT32)
+    file_map.register("unk004",  DATA_UINT32)
+    file_map.register("unk005",  DATA_UINT16)
+    file_map.register("unk006",  DATA_UINT8)
     
     file_map.new_block("ttds", "TTDS")
     file_map.register("unk001", DATA_UINT32)
