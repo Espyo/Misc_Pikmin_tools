@@ -5,7 +5,7 @@ about the cave. This information is very raw, using internal names, and not sepa
 the objects by categories.
 '''
 
-import constants
+import p2_cave_parser.constants as constants
 
 # Data about a cave.
 class Cave :
