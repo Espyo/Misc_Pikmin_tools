@@ -2,7 +2,7 @@
 
 Each tool should have its own documentation, so this file will just serve as a general README.
 
-These are Python scripts. To run scripts that involve images, you'll want to install Pillow. Use pip for this.
+These are Python 3 scripts. To run scripts that involve images, you'll want to install Pillow. Use pip for this.
 
 List of tools:
     Hey! Pikmin save editor: Exports .sav files into an editable json format, and imports the json back. (Python 3)

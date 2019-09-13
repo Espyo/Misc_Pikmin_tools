@@ -1,0 +1,21 @@
+Espyo's Pikmin 2 cave parser
+
+Read the "Miscellaneous Pikmin tools" parent project's README for more information.
+
+The purpose of the Pikmin 2 cave parser is to give Python programmers a function (read_cave_from_file) that reads a Pikmin 2 cave file, and outputs an object of a class (Cave) that contains all of the parsed data.
+
+The following is a usage example. This is a script file in the same directory as p2_cave_parser.py, and should be run with a cave file as an argument.
+
+import sys
+from p2_cave_parser import *
+
+if __name__ == "__main__":
+    cave_data = read_cave_from_file(open(sys.argv[1], "r", encoding="utf-8", errors='ignore'))
+    
+    s_nr = 0
+    for s in cave_data.sublevels:
+        s_nr = s_nr + 1
+        print("Sublevel " + str(s_nr) + " has the following in TekiInfo:")
+        for o in s.teki_objects:
+            print("  " + o.obj_class + " (minimum amount of " + str(o.min_amount) + ")")
+        print("")
