@@ -5,7 +5,7 @@ about the cave. This information is very raw, using internal names, and not sepa
 the objects by categories.
 '''
 
-from . import constants
+import constants
 
 # Data about a cave.
 class Cave :
@@ -222,7 +222,7 @@ def read_tekiinfo(infile, cave_data, sublevel_nr) :
                         obj.spawn_method = words[0][0:1]
                         words[0] = words[0][2:]
                     else :
-                        obj.spawn_method = '$'
+                        obj.spawn_method = 1
                         words[0] = words[0][1:]
                 
                 underscore_pos = words[0].find("_")
@@ -388,8 +388,12 @@ def read_capinfo(infile, cave_data, sublevel_nr) :
                 words = line.split()
                 
                 if words[0][0] == '$' :
-                    obj.spawn_method = int(words[0][1])
-                    words[0] = words[0][2:]
+                    if words[0][1].isdigit() :
+                        obj.spawn_method = words[0][0:1]
+                        words[0] = words[0][2:]
+                    else :
+                        obj.spawn_method = 1
+                        words[0] = words[0][1:]
                 
                 underscore_pos = words[0].find("_")
                 if underscore_pos == -1 :
