@@ -75,6 +75,7 @@ class RawSublevelInfo:
         # Unused. If 1, seesaw blocks show up randomly.
         self.has_seesaw_blocks = None
 
+
 ## Raw data about an object entry in a sublevel.
 class RawObject:
     
@@ -85,7 +86,7 @@ class RawObject:
         self.obj_class = ''
         # Class of the object this enemy is carrying, if any. Again, the capitalization is unchanged.
         self.carrying = None
-        # Spawn method. None if none is specified, otherwise it's a string with the '$' and the (optional) number.
+        # Spawn method. Standard spawn if None, otherwise it's a string with the '$' and the (optional) number.
         self.spawn_method = None
         # Minimum amount of this entry to spawn.
         self.min_amount = None
@@ -95,6 +96,7 @@ class RawObject:
         self.spawn_type = None
         # Type of dead end unit to use, for entries in CapInfo.
         self.cap_type = None
+
 
 ## Raw data about a gate entry.
 class RawGate:
@@ -112,6 +114,7 @@ class RawGate:
 
 ## Reads a cave file and returns a RawCave object filled with the cave's data.
 #  @param infile Input file.
+#  @return The parsed cave data.
 def parse_cave_from_file(infile):
     cave_data = RawCave()
     
@@ -458,14 +461,11 @@ def read_capinfo(infile, cave_data, sublevel_nr):
             else:
                 obj.spawn_type = int(line)
                 
-                if obj.spawn_type == 6:
-                    obj.min_amount = int(weight_str)
-                else:
-                    obj.weight = int(weight_str[-1])
-                    weight_str = weight_str[:-1]
-                    if len(weight_str) == 0:
-                        weight_str = '0'
-                    obj.min_amount = int(weight_str)
+                obj.weight = int(weight_str[-1])
+                weight_str = weight_str[:-1]
+                if len(weight_str) == 0:
+                    weight_str = '0'
+                obj.min_amount = int(weight_str)
                 
                 next_is_cap_type = True
                 next_is_weight = False
@@ -477,6 +477,7 @@ def read_capinfo(infile, cave_data, sublevel_nr):
 
 ## Cleans a line, removing its comments and indentation.
 #  @param line Line of text to clean.
+#  @return The cleaned line.
 def clean_line(line):
     number_sign_pos = line.find('#')
     
