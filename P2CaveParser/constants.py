@@ -3,7 +3,7 @@
 #  Each key is the name of an object, in all lowercase.
 #  Each value is an array with information about that object.
 #  * First element is the name. This ideally matches the name of a Pikipedia article.
-#  * Second is a generic type ("ene", "pla", etc.).
+#  * Second is a generic, human-friendly type ("ene", "pla", etc.).
 #  * Third is disambiguation modifiers, like how the Figworts have small and large variants.
 
 # TODO These are the US names -- check EU and JP
