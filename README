@@ -7,5 +7,5 @@ These are Python 3 scripts. To run scripts that involve images, you'll want to i
 List of tools:
     Hey! Pikmin save editor: Exports .sav files into an editable json format, and imports the json back. (Python 3)
     Pikmin 2 title tool: Helps you create title screen Pikmin formations. (Python 2/3, requires Pillow)
-    Pikmin 2 cave parser: (For programmers) A function that reads a Pikmin 2 cave file and returns a Cave object with
-        information about the cave. (Python 3)
+    Pikmin 2 cave parser: (For programmers) A function that reads a Pikmin 2 cave file and returns a RawCave object with
+        raw information about the cave. Also, another class that can turn that into more human-readable info. (Python 3)

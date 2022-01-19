@@ -4,18 +4,29 @@ Read the "Miscellaneous Pikmin tools" parent project's README for more informati
 
 The purpose of the Pikmin 2 cave parser is to give Python programmers a function (parseCaveFromFile) that reads a Pikmin 2 cave file, and outputs an object of a class (RawCave) that contains all of the parsed data.
 
+In addition, there is also the file p2CaveParserCleaner.py, with classes for a "cleaner" cave object. This object contains more human-readable information.
+
 The following is a usage example. This is a script file in a directory that contains the Pikmin 2 cave parser project in a sub-directory (P2CaveParser), and should be run with a cave file as an argument.
 
 import sys
-import P2CaveParser.p2CaveParser
+import P2CaveParser.p2CaveParser as p2cp
+import P2CaveParser.p2CaveParserCleaner as p2cpc
 
 if __name__ == '__main__':
-    caveData = p2CaveParser.parseCaveFromFile(open(sys.argv[1], 'r', encoding='utf-8', errors='ignore'))
+    rawCaveData = p2cp.parseCaveFromFile(open(sys.argv[1], 'r', encoding='utf-8', errors='ignore'))
     
     sNr = 0
-    for s in caveData.sublevels:
+    for s in rawCaveData.sublevels:
         sNr = sNr + 1
         print('Sublevel ' + str(sNr) + ' has the following in TekiInfo:')
         for o in s.tekiObjects:
             print('  ' + o.objClass + ' (minimum amount of ' + str(o.minAmount) + ')')
         print('')
+
+    cleanCaveData = p2cpc.P2Cave()
+    cleanCaveData.fromRaw(rawCaveData)
+
+    sNr = 0
+    for s in cleanCaveData.sublevels:
+        sNr = sNr + 1
+        print('Sublevel ' + str(sNr) + ' will generate at least {1} out of {2} \'main\' objects.'.format(sNr, s.info.mainObjectMinTotal, s.info.mainObjectIdealMax))

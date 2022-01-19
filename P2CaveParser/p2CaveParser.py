@@ -40,39 +40,39 @@ class RawSublevelInfo:
         self.sublevelNumberF000 = None
         # Same as {f000} but it's {f001}.
         self.sublevelNumberF001 = None
-        # Ideal max number of objects for objects in the 'main' category.
+        # Ideal max number of objects for objects in the 'main' category. (Parameter {f002}.)
         self.mainObjectIdealMax = None
-        # Ideal max number of objects for objects in the 'treasure' category.
+        # Ideal max number of objects for objects in the 'treasure' category. (Parameter {f003}.)
         self.treasureObjectIdealMax = None
-        # Ideal max number of gates.
+        # Ideal max number of gates. (Parameter {f004}.)
         self.gateObjectIdealMax = None
-        # Number of room cave units.
+        # Number of room cave units. (Parameter {f005}.)
         self.roomUnits = None
-        # Ratio between how many corridors and room units there are.
+        # Ratio between how many corridors and room units there are. (Parameter {f006}.)
         self.corridorRoomRatio = None
-        # Does the sublevel have an exit geyser?
+        # Does the sublevel have an exit geyser? (Parameter {f007}.)
         self.hasGeyser = None
-        # Name of the file that lists the cave units to use.
-        self.caveUnitListFilename = ''
-        # Name of the file that declares the lighting to use.
-        self.lightingFilename = ''
-        # Name of the skybox to use.
-        self.skybox = ''
-        # Is the next sublevel hole clogged?
+        # Name of the file that lists the cave units to use. (Parameter {f008}.)
+        self.caveUnitListFilename = None
+        # Name of the file that declares the lighting to use. (Parameter {f009}.)
+        self.lightingFilename = None
+        # Name of the skybox to use. (Parameter {f00A}.)
+        self.skybox = None
+        # Is the next sublevel hole clogged? (Parameter {f010}.)
         self.hasClog = None
-        # Unknown.
+        # Unknown. (Parameter {f011}.)
         self.unknownF011 = None
-        # Music type. 0 is normal, 1 is boss, 2 is rest.
+        # Music type. 0 is normal, 1 is boss, 2 is rest. (Parameter {f012}.)
         self.musicType = None
-        # Does the sublevel have an invisible floor plain, or do objects fall into the abyss?
+        # Does the sublevel have an invisible floor plane, or do objects fall into the abyss? (Parameter {f013}.)
         self.hasFloor = None
-        # Maximum number of dead end cave units.
-        self.deadEndMax = None
-        # If 0, all CapInfo objects are ignored.
-        self.hasDeadEndObjects = None
-        # Time until the Waterwraith appears.
+        # 0-100 chance of an open doorway being a dead end. (Parameter {f014}.)
+        self.deadEndChance = None
+        # File format version. If 0, all CapInfo objects are ignored. (Parameter {f015}.)
+        self.fileFormat = None
+        # Time until the Waterwraith appears. (Parameter {f016}.)
         self.waterwraithTime = None
-        # Unused. If 1, seesaw blocks show up randomly.
+        # If 1, seesaw blocks show up randomly. Unused. (Parameter {f017}.)
         self.hasSeesawBlocks = None
 
 
@@ -83,7 +83,7 @@ class RawObject:
     #  @param self Object pointer.
     def __init__(self):
         # Just the object's class. This uses whatever capitalization is in the file.
-        self.objClass = ''
+        self.objClass = None
         # Class of the object this enemy is carrying, if any. Again, the capitalization is unchanged.
         self.carrying = None
         # Spawn method. Standard spawn if None, otherwise it's a string with the '$' and the (optional) number.
@@ -105,7 +105,7 @@ class RawGate:
     #  @param self Object pointer.
     def __init__(self):
         # Word used to describe this gate. It's always 'gate'.
-        self.keyword = ''
+        self.keyword = None
         # This gate's health.
         self.health = None
         # Random distribution weight.
@@ -204,9 +204,9 @@ def readFloorinfo(infile, caveData, sublevelNr):
             elif words[0] == '{f013}':
                 info.hasFloor = int(words[2])
             elif words[0] == '{f014}':
-                info.deadEndMax = int(words[2])
+                info.deadEndChance = int(words[2])
             elif words[0] == '{f015}':
-                info.hasDeadEndObjects = int(words[2])
+                info.fileFormat = int(words[2])
             elif words[0] == '{f016}':
                 info.waterwraithTime = float(words[2])
             elif words[0] == '{f017}':
@@ -285,11 +285,7 @@ def readTekiinfo(infile, caveData, sublevelNr):
                 if obj.spawnType == 6:
                     obj.minAmount = int(weightStr)
                 else:
-                    obj.weight = int(weightStr[-1])
-                    weightStr = weightStr[:-1]
-                    if len(weightStr) == 0:
-                        weightStr = '0'
-                    obj.minAmount = int(weightStr)
+                    obj.minAmount, obj.weight = splitWeightStr(weightStr)
                 
                 nextIsWeight = True
                 entryNr += 1
@@ -328,11 +324,7 @@ def readIteminfo(infile, caveData, sublevelNr):
             words = line.split()
             
             obj.objClass = words[0]
-            obj.weight = int(words[1][-1])
-            s = words[1][:-1]
-            if len(s) == 0:
-                s = '0'
-            obj.minAmount = int(s)
+            obj.minAmount, obj.weight = splitWeightStr(words[1])
             
             entryNr += 1
             
@@ -377,7 +369,7 @@ def readGateinfo(infile, caveData, sublevelNr):
                 nextIsHealth = False
                 
             else:
-                obj.weight = int(line[-1])
+                obj.minAmount, obj.weight = splitWeightStr(line)
                 
                 nextIsHealth = True
                 entryNr += 1
@@ -460,12 +452,7 @@ def readCapinfo(infile, caveData, sublevelNr):
                 
             else:
                 obj.spawnType = int(line)
-                
-                obj.weight = int(weightStr[-1])
-                weightStr = weightStr[:-1]
-                if len(weightStr) == 0:
-                    weightStr = '0'
-                obj.minAmount = int(weightStr)
+                obj.minAmount, obj.weight = splitWeightStr(weightStr)
                 
                 nextIsCapType = True
                 nextIsWeight = False
@@ -487,3 +474,16 @@ def cleanLine(line):
     line = line.strip(' \t\r\n')
     
     return line
+
+
+## Splits a "weight" string into its minimum amount and weight components.
+#  @param weightStr The string with the weight and minimum amount.
+#  @return A tuple of the minimum amount and weight.
+def splitWeightStr(weightStr):
+    str2 = weightStr
+    weight = int(str2[-1])
+    str2 = str2[:-1]
+    if len(str2) == 0:
+        str2 = '0'
+    minAmount = int(str2)
+    return minAmount, weight
