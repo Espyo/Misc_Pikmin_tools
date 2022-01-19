@@ -14,6 +14,9 @@ class RawCave:
     ## Constructor.
     #  @param self Object pointer.
     def __init__(self):
+        # Name of the text file with the cave data.
+        self.internalName = None
+        # List of sublevels.
         self.sublevels = []
 
 
@@ -23,10 +26,15 @@ class RawSublevel:
     ## Constructor.
     #  @param self Object pointer.
     def __init__(self):
+        # Information about the sublevel.
         self.info = RawSublevelInfo()
+        # Entries in TekiInfo.
         self.tekiObjects = []
+        # Entries in ItemInfo.
         self.itemObjects = []
+        # Entries in GateInfo.
         self.gateObjects = []
+        # Entries in CapInfo.
         self.capObjects = []
 
 
@@ -422,7 +430,7 @@ def readCapinfo(infile, caveData, sublevelNr):
                         obj.spawnMethod = words[0][0:1]
                         words[0] = words[0][2:]
                     else:
-                        obj.spawnMethod = 1
+                        obj.spawnMethod = '$'
                         words[0] = words[0][1:]
                 
                 underscorePos = words[0].find('_')

@@ -21,6 +21,8 @@ class P2Cave:
     ## Constructor.
     #  @param self Object pointer.
     def __init__(self):
+        # Name of the text file with the cave data.
+        self.internalName = ''
         # Info about all sublevels.
         self.sublevels = []
     
@@ -215,7 +217,7 @@ class P2SublevelEntry:
         self.carrying = None
         # ID of the object that is carrying it, if any.
         self.carriedBy = None
-        # Spawn method.
+        # Spawn method. Standard spawn if None, otherwise it's a string with the '$' and the (optional) number.
         self.spawnMethod = None
         # Minimum amount the game wants to spawn.
         self.minAmount = None
