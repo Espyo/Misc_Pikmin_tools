@@ -1,0 +1,9 @@
+Espyo's Pikipedia cave object dump script
+
+Read the "Miscellaneous Pikmin tools" parent project's README for more information.
+
+This script reads a cave file and outputs a text file that represents the cave's objects in MediaWiki wikitext format. It was made for Pikipedia, so that I could add the list of objects and their amounts to Pikipedia's cave pages, as well as a more detailed list showing what gets spawned, in what order, what chances, etc.
+
+The script's output isn't perfect, but it's good enough for general purpose. Sometimes some manual tweaking is necessary, and for a lot of cases, the script will actually detect some edge cases that are too confusing or complex to implement, and will instead write a message on the command line so that the person running the script can be warned about those cases.
+
+This script makes use of the Pikmin 2 Cave Parser project, so there should be a "P2CaveParser" folder in the same folder as the script.
