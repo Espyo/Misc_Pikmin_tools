@@ -14,8 +14,6 @@ class RawCave:
     ## Constructor.
     #  @param self Object pointer.
     def __init__(self):
-        # Name of the text file with the cave data.
-        self.internalName = None
         # List of sublevels.
         self.sublevels = []
 
@@ -98,7 +96,7 @@ class RawObject:
         self.spawnMethod = None
         # Minimum amount of this entry to spawn.
         self.minAmount = None
-        # Random distribution weight.
+        # Random filling weight.
         self.weight = None
         # Type of spawn point to use.
         self.spawnType = None
@@ -116,7 +114,9 @@ class RawGate:
         self.keyword = None
         # This gate's health.
         self.health = None
-        # Random distribution weight.
+        # Minimum amount of this entry to spawn. Unused by the game.
+        self.minAmount = None
+        # Random filling weight.
         self.weight = None
 
 
